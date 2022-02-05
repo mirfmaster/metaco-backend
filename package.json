@@ -3,8 +3,10 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "helmet": "^5.0.2",
+    "moment": "^2.29.1",
     "sequelize": "^6.14.1",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "yup": "^0.32.11"
   },
   "main": "index.js",
   "scripts": {
@@ -15,6 +17,7 @@
     "seed:fresh": "npm run migrate:fresh && npx sequelize-cli db:seed:all"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.0.0-alpha.5",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1"
   }

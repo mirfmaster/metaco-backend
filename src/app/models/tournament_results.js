@@ -57,5 +57,34 @@ module.exports = (sequelize, DataTypes) => {
     });
 
   };
+
+  tournament_results.addHook('afterCreate', async (result, options) => {
+    updateCoinTeamMember(result, options)
+  });
+
+  async function updateCoinTeamMember(result, options) {
+    const members = await sequelize.models.team_members.findAll({
+      where: {
+        team_id: result.dataValues.team_id
+      }
+    })
+
+    const member_id = members.map((member) => {
+      return member.dataValues.id
+    })
+
+    let user_members = await sequelize.models.user.findAll({
+      where: {
+        id: member_id
+      }
+    })
+
+    user_members.map(async (user) => {
+      await user.update({
+        coin: result.dataValues.point + user.dataValues.coin
+      })
+    })
+  }
+
   return tournament_results;
 };

@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   team_members.init({
-    firstName: DataTypes.STRING,
     id: {
       allowNull: false,
       autoIncrement: true,

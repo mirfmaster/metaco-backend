@@ -58,5 +58,20 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
+
+  teams.associate = (models) => {
+    teams.hasMany(models.tournament_results, {
+      onDelete: "CASCADE",
+      foreignKey: "team_id",
+      as: "tournament_results",
+    });
+
+    teams.belongsTo(models.user, {
+      otherKey: "id",
+      foreignKey: "captain_id",
+      as: "captain",
+    });
+
+  };
   return teams;
 };

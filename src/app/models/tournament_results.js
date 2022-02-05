@@ -30,7 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     position: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
+    },
+    point: {
+      type: DataTypes.INTEGER,
     },
     created_at: {
       allowNull: false,
@@ -46,5 +49,13 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
+
+  tournament_results.associate = (models) => {
+    tournament_results.belongsTo(models.teams, {
+      foreignKey: "team_id",
+      as: "team",
+    });
+
+  };
   return tournament_results;
 };

@@ -66,6 +66,12 @@ module.exports = (sequelize, DataTypes) => {
       as: "tournament_results",
     });
 
+    teams.hasMany(models.team_members, {
+      onDelete: "CASCADE",
+      foreignKey: "team_id",
+      as: "team_members",
+    });
+
     teams.belongsTo(models.user, {
       otherKey: "id",
       foreignKey: "captain_id",

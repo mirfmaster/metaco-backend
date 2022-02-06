@@ -3,6 +3,9 @@ const yup = require("yup");
 const {
   routeCallback
 } = require("../../utils/router");
+const {
+  sequelize
+} = require("../models");
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const createSchema = {
@@ -53,17 +56,7 @@ const get = async (req, res) => {
     },
   } = req;
 
-  let result = await TeamService.get({
-    ...parsedRequest,
-    include: [{
-      association: 'tournament_results',
-      attributes: ['point']
-    }, {
-      association: 'captain',
-      attributes: ['name']
-    }]
-  });
-
+  let result = await TeamService.querySelect("select users.name as captain_name,teams.*, (SELECT SUM(tr.point) FROM tournament_results as tr WHERE tr.team_id = teams.id) as total_point from teams, users where users.id=teams.captain_id order by total_point DESC limit 20")
 
   res.send(result);
 };

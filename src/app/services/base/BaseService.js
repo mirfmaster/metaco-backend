@@ -1,5 +1,9 @@
 const ErrorInstance = require("../../../utils/ErrorInstance");
-const httpResponse = require("../../../core/supports/httpResponse")
+const httpResponse = require("../../../core/supports/httpResponse");
+const {
+    sequelize,
+    Sequelize
+} = require("../../models");
 
 class BaseService {
     constructor(opts) {
@@ -21,7 +25,10 @@ class BaseService {
     async get(query = {}) {
         try {
             if (!query.order) {
-                query = { ...query, ...this.defaultOrder }
+                query = {
+                    ...query,
+                    ...this.defaultOrder
+                }
             }
             return await this.model.findAll(query);
         } catch (error) {
@@ -157,12 +164,29 @@ class BaseService {
      */
     async destroyById(id) {
         try {
-            let record = await this.model.destroy({ where: { id } });
+            let record = await this.model.destroy({
+                where: {
+                    id
+                }
+            });
             if (!record) throw Error(`Delete failed on id: ${id} is not found`)
 
             return record
         } catch (error) {
             throw new ErrorInstance(error.message, httpResponse.NOT_FOUND)
+        }
+    }
+
+    async querySelect(query) {
+        try {
+            let record = await sequelize.query(query, {
+                type: Sequelize.QueryTypes.SELECT
+            });
+            if (!record) throw Error(`Query select failed at model: ${this.model}`)
+
+            return record
+        } catch (error) {
+            throw new ErrorInstance(error.message, httpResponse.SERVER_ERROR)
         }
     }
 }

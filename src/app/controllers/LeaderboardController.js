@@ -68,7 +68,7 @@ const get = async (req, res) => {
     replacements.push(`%${search}%`)
   }
 
-  let result = await TeamService.querySelect(`select users.name as captain_name,teams.*, (SELECT SUM(tr.point) FROM tournament_results as tr WHERE tr.team_id = teams.id) as total_point from teams, users where users.id=teams.captain_id ${querySearch} order by total_point DESC limit 20`, replacements)
+  let result = await TeamService.querySelect(`select users.name as captain_name,teams.*, tournaments.title, (SELECT SUM(tr.point) FROM tournament_results as tr WHERE tr.team_id = teams.id) as total_point from teams, tournaments, users where users.id=teams.captain_id and teams.tournament_id=tournaments.id ${querySearch} order by total_point DESC limit 20`, replacements)
 
   res.send(result);
 };

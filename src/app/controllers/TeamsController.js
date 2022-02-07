@@ -8,13 +8,14 @@ const phoneRegExp =
 
 const get = async (req, res) => {
   const {
+    parsedRequest,
     app: {
       services: {
         TeamService
       },
     },
   } = req;
-  let result = await TeamService.get();
+  let result = await TeamService.get(parsedRequest);
 
   res.send(result);
 };

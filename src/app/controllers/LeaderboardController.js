@@ -42,7 +42,7 @@ const createSchema = {
       return check.length > 0;
     }),
   position: yup
-    .mixed().oneOf([1, 2, 3], "Position is not valid")
+    .mixed().oneOf(["1", "2", "3"], "Position is not valid")
     .required("Position is required"),
 };
 

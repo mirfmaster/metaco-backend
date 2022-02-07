@@ -107,7 +107,6 @@ const parseResponseQuery = (req, res, next) => {
   const {
     query,
     method,
-    app: { logger },
   } = req;
 
   if (method == "GET" && query) {
@@ -116,12 +115,10 @@ const parseResponseQuery = (req, res, next) => {
       try {
         result = { ...result, [key]: JSON.parse(query[key]) };
       } catch (error) {
-        console.log(key, error);
-        logger.error(
-          `(parseResponseQuery) query: ${JSON.stringify(
-            query
-          )} on key: ${key} with url: ${req.url}`
-        );
+        console.log(`(parseResponseQuery) query: ${JSON.stringify(
+          query
+        )} on key: ${key} with url: ${req.url}`);
+
         if (key == "where" && typeof query[key] == "string")
           return res.sendStatus(400);
       }

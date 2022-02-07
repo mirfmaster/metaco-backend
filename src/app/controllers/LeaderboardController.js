@@ -54,9 +54,21 @@ const get = async (req, res) => {
         TeamService
       },
     },
+    query: {
+      search
+    }
   } = req;
+  let querySearch = "",
+    replacements = [];
 
-  let result = await TeamService.querySelect("select users.name as captain_name,teams.*, (SELECT SUM(tr.point) FROM tournament_results as tr WHERE tr.team_id = teams.id) as total_point from teams, users where users.id=teams.captain_id order by total_point DESC limit 20")
+
+  if (search) {
+    querySearch = " and (captain_name like ? or teams.name like ?)"
+    replacements.push(`%${search}%`)
+    replacements.push(`%${search}%`)
+  }
+
+  let result = await TeamService.querySelect(`select users.name as captain_name,teams.*, (SELECT SUM(tr.point) FROM tournament_results as tr WHERE tr.team_id = teams.id) as total_point from teams, users where users.id=teams.captain_id ${querySearch} order by total_point DESC limit 20`, replacements)
 
   res.send(result);
 };

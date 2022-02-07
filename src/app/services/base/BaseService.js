@@ -177,11 +177,20 @@ class BaseService {
         }
     }
 
-    async querySelect(query) {
+    async querySelect(query, replacements = null) {
         try {
-            let record = await sequelize.query(query, {
+            let options = {
                 type: Sequelize.QueryTypes.SELECT
-            });
+            }
+            if (replacements) {
+                options = {
+                    ...options,
+                    replacements
+                }
+            }
+            console.log(replacements, options);
+
+            let record = await sequelize.query(query, options);
             if (!record) throw Error(`Query select failed at model: ${this.model}`)
 
             return record

@@ -1,7 +1,10 @@
+var path = require('path');
+var pathStorage = path.resolve('database.sqlite3')
+
 module.exports = {
   "development": {
     "dialect": "sqlite",
-    "storage": "E:\\Github\\playground\\Coding Test\\metaco\\metaco-backend\\database.sqlite3"
+    "storage": pathStorage
   },
   "test": {
     "dialect": "sqlite",
@@ -9,6 +12,6 @@ module.exports = {
   },
   "production": {
     "dialect": "sqlite",
-    "storage": "E:\\Github\\playground\\Coding Test\\metaco\\metaco-backend\\database.sqlite3"
+    "storage": pathStorage
   }
 }

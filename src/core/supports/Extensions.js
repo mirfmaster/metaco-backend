@@ -3,7 +3,9 @@ const httpResponse = require("./httpResponse");
 const helper = (req, res, next) => {
   req.getLogger = () => {
     const {
-      app: { logger },
+      app: {
+        logger
+      },
     } = req;
     return logger;
   };
@@ -88,9 +90,9 @@ const extendedResponse = (req, res, next) => {
   };
 
   res.ext.badRequest = (message = "Bad Request", error = {}) => {
-    if (req.body) {
-      logger.info(`${endpoint} | with error ${message}`, req.body);
-    }
+    // if (req.body) {
+    //   logger.info(`${endpoint} | with error ${message}`, req.body);
+    // }
     return res.status(httpResponse.BAD_REQUEST).send({
       code: httpResponse.BAD_REQUEST,
       success: false,
@@ -113,7 +115,10 @@ const parseResponseQuery = (req, res, next) => {
     let result;
     Object.keys(query).map((key) => {
       try {
-        result = { ...result, [key]: JSON.parse(query[key]) };
+        result = {
+          ...result,
+          [key]: JSON.parse(query[key])
+        };
       } catch (error) {
         console.log(`(parseResponseQuery) query: ${JSON.stringify(
           query

@@ -9,5 +9,6 @@ const router = Router();
 router.get('/teams', TeamsController.get);
 router.get('/tournaments', TournamentController.get);
 router.get('/users', UserController.get);
+router.get('/users/:id', UserController.detailUser);
 
 module.exports = router;

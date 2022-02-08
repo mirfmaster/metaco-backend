@@ -56,7 +56,9 @@ const detailUser = async (req, res) => {
     where: {
       id: req.params.id
     },
-    association: ['team_members']
+    include: [{
+      association: 'team_members'
+    }]
   });
 
   if (!result) return res.ext.notFound("No users found");

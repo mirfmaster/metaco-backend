@@ -46,5 +46,14 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
+
+  User.associate = (models) => {
+    User.belongsTo(models.team_members, {
+      onDelete: "CASCADE",
+      foreignKey: "id",
+      otherKey: 'user_id',
+      as: "team_members",
+    });
+  };
   return User;
 };
